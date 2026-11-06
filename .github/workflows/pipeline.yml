@@ -1,6 +1,5 @@
 
-name: DevsecOps Pipeline P12
-
+name: DevSecOps Pipeline P12
 
 on:
   push:
@@ -12,25 +11,25 @@ jobs:
   security-and-quality:
     runs-on: self-hosted
 
-
     steps:
-      -name: Checkout Repository
-       uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-      -name: Setup Python
-       uses: actions/setup-python@v5
-       with:
-        python-version: '3.12'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint flask semgrep
 
+      - name: Run Pylint
+        run: |
+          pylint --version
 
-      -name: Install Dependencies
-       run:
-        python -m pip install --upgrade pip
-        pip install pylint flask semgrep
-
-
-      -name: Run Semgrep
-       run:
-        semgrep --version
-        semgrep scan --config auto .
+      - name: Run Semgrep
+        run: |
+          semgrep --version
+          semgrep scan --config auto .
